@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <title>Home</title>
+        <link rel="stylesheet" type="text/css" href="index.css">
+    </head>
+    <body>
+        <div>
+            <h1>Home page</h1>
+            <p>I'm not blue</p>
+            <a href="index.html">Let's go back</a>
+            <br/>
+        </div>
+        <button onclick="changeImage()">Click me</button>
+        <button onclick="bigImage()">Big image</button>
+        <br />
+        <h1 id="title">Image 1</h1>
+        <img id="image" src="./assets/cat1.jpg" width="100"/>
+        <script>
+            const image1 = {
+                name: 'Image 1',
+                src: './assets/cat1.jpg'
+            };
+            const image2 = {
+                name: 'Image 2',
+                src: './assets/cat2.jpg'
+            };
+            const image3 = {
+                name: 'Image 3',
+                src: './assets/cat3.jpg'
+            };
+            const imageArray = [image1, image2, image3];
+            let displayImageIndex = 0;
+
+            setInterval(changeImage, 3500);
+
+            function changeImage() {
+                displayImageIndex++;
+                if (displayImageIndex >= imageArray.length) {
+                    displayImageIndex = 0;
+                }
+                const imageElement = document.querySelector("img");
+                const titleElement = document.querySelector("#title");
+                imageElement.src = imageArray[displayImageIndex].src;
+                titleElement.innerHTML = imageArray[displayImageIndex].name;
+            }
+
+            function bigImage() {
+                const imageElement = document.querySelector("img");
+                imageElement.classList.toggle("big-image");
+            }
+            
+        </script>
+    </body>
+</html> 
