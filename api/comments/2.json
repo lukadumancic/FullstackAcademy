@@ -1,0 +1,14 @@
+[
+    {
+        "comment": "Lorem ipsum comment",
+        "userId": 2
+    },
+    {
+        "comment": "Hey, I'm here",
+        "userId": 2
+    },
+    {
+        "comment": "Great post!",
+        "userId": 3
+    }
+]

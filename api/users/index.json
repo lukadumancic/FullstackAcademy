@@ -1,0 +1,17 @@
+[
+    {
+        "id":1,
+        "name": "Joe",
+        "username": "drawvegetables"
+    },
+    {
+        "id":2,
+        "name": "Tristan",
+        "username": "seaclash"
+    },
+    {
+        "id":3,
+        "name": "Luka",
+        "username": "gloomysearch"
+    }
+]
