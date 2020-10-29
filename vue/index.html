@@ -1,0 +1,58 @@
+<html>
+    <head>
+        <script src="https://cdn.jsdelivr.net/npm/vue"></script>
+    </head>
+    <body>
+        <div id="app">
+            <p v-if="showMessage">Now you see me</p>
+            <button @click="toggleMessage">Toggle</button>
+            <button @click="addToArray">Add To Array</button>
+            <button @click="changePrice">changePrice</button>
+            <button @click="changeArrayNumber">change Array Number</button>
+            <div v-for="number in exampleArray">
+                <span>{{ number }}</span>
+            </div>
+            <p>{{ fullname }}</p>
+            <p>{{ price }}</p>
+        </div>
+        <script>
+            const app = new Vue({
+                el: '#app',
+                data: {
+                    message: 'Hello!',
+                    exampleArray: [0, 1.5, 2],
+                    showMessage: false,
+                    name: 'John',
+                    surname: 'Smith'
+                },
+                created() {
+                    this.price = 100;
+                },
+                watch: {
+                    showMessage(newValue) {
+                        console.log('Changed to ', newValue);
+                    }
+                },
+                methods: {
+                    toggleMessage() {
+                        this.showMessage = !this.showMessage;
+                    },
+                    addToArray() {
+                        this.exampleArray.push(Math.round(Math.random() * 10));
+                    },
+                    changeArrayNumber() {
+                        Vue.set(this.exampleArray, 0, Math.round(Math.random() * 10));
+                    },
+                    changePrice() {
+                        this.price = 200;
+                    }
+                },
+                computed: {
+                    fullname() {
+                        return this.name + this.surname;
+                    }
+                }
+            });
+        </script>
+    </body>
+</html>
