@@ -1,19 +1,39 @@
 <template>
   <div>
-
-    <!--Stats cards-->
     <div class="row">
-      <div class="col-md-6 col-xl-3" v-for="stats in statsCards" :key="stats.title">
+      <div class="col-md-6 col-xl-3">
         <stats-card>
-          <div class="icon-big text-center" :class="`icon-${stats.type}`" slot="header">
-            <i :class="stats.icon"></i>
+          <div
+            class="icon-big text-center"
+            :class="`icon-warning`"
+            slot="header"
+          >
+            <img v-if="weather.icon" :src="weather.icon" />
           </div>
           <div class="numbers" slot="content">
-            <p>{{stats.title}}</p>
-            {{stats.value}}
+            <p>{{ weather.type }}</p>
+            {{ weather.temperature }}°C
           </div>
           <div class="stats" slot="footer">
-            <i :class="stats.footerIcon"></i> {{stats.footerText}}
+            <i class="ti-reload"></i> {{ weather.description }}
+          </div>
+        </stats-card>
+      </div>
+      <div class="col-md-6 col-xl-3">
+        <stats-card>
+          <div
+            class="icon-big text-center"
+            :class="`icon-warning`"
+            slot="header"
+          >
+            <img v-if="weather.icon" :src="weather.icon" />
+          </div>
+          <div class="numbers" slot="content">
+            <p>{{ weather.type }}</p>
+            {{ weather.temperature }}°C
+          </div>
+          <div class="stats" slot="footer">
+            <i class="ti-reload"></i> {{ weather.description }}
           </div>
         </stats-card>
       </div>
@@ -21,12 +41,14 @@
 
     <!--Charts-->
     <div class="row">
-
       <div class="col-12">
-        <chart-card title="Users behavior"
-                    sub-title="24 Hours performance"
-                    :chart-data="usersChart.data"
-                    :chart-options="usersChart.options">
+        <chart-card
+          :key="weather.temperatureHistory.length"
+          :title="'Users behavior'"
+          sub-title="24 Hours performance"
+          :chart-data="weatherData"
+          :chart-options="weatherDataOptions"
+        >
           <span slot="footer">
             <i class="ti-reload"></i> Updated 3 minutes ago
           </span>
@@ -39,12 +61,15 @@
       </div>
 
       <div class="col-md-6 col-12">
-        <chart-card title="Email Statistics"
-                    sub-title="Last campaign performance"
-                    :chart-data="preferencesChart.data"
-                    chart-type="Pie">
+        <chart-card
+          title="Email Statistics"
+          sub-title="Last campaign performance"
+          :chart-data="preferencesChart.data"
+          chart-type="Pie"
+        >
           <span slot="footer">
-            <i class="ti-timer"></i> Campaign set 2 days ago</span>
+            <i class="ti-timer"></i> Campaign set 2 days ago</span
+          >
           <div slot="legend">
             <i class="fa fa-circle text-info"></i> Open
             <i class="fa fa-circle text-danger"></i> Bounce
@@ -54,10 +79,12 @@
       </div>
 
       <div class="col-md-6 col-12">
-        <chart-card title="2015 Sales"
-                    sub-title="All products including Taxes"
-                    :chart-data="activityChart.data"
-                    :chart-options="activityChart.options">
+        <chart-card
+          title="2015 Sales"
+          sub-title="All products including Taxes"
+          :chart-data="activityChart.data"
+          :chart-options="activityChart.options"
+        >
           <span slot="footer">
             <i class="ti-check"></i> Data information certified
           </span>
@@ -67,91 +94,42 @@
           </div>
         </chart-card>
       </div>
-
     </div>
-
   </div>
 </template>
 <script>
-import { StatsCard, ChartCard } from "@/components/index";
-import Chartist from 'chartist';
+import { mapGetters, mapActions } from "vuex";
+import { StatsCard, ChartCard } from "@/components";
+import Chartist from "chartist";
+import moment from 'moment';
+
 export default {
   components: {
     StatsCard,
     ChartCard
+  },
+  created() {
+    this.fetchWeatherData();
+    this.weatherDataOptions = {
+      low: -30,
+      high: 50,
+      showArea: false,
+      height: "245px",
+      axisX: {
+        showGrid: false
+      },
+      lineSmooth: Chartist.Interpolation.simple({
+        divisor: 3
+      }),
+      showLine: true,
+      showPoint: false
+    };
   },
   /**
    * Chart data used to render stats, charts. Should be replaced with server data
    */
   data() {
     return {
-      statsCards: [
-        {
-          type: "warning",
-          icon: "ti-server",
-          title: "Capacity",
-          value: "105GB",
-          footerText: "Updated now",
-          footerIcon: "ti-reload"
-        },
-        {
-          type: "success",
-          icon: "ti-wallet",
-          title: "Revenue",
-          value: "$1,345",
-          footerText: "Last day",
-          footerIcon: "ti-calendar"
-        },
-        {
-          type: "danger",
-          icon: "ti-pulse",
-          title: "Errors",
-          value: "23",
-          footerText: "In the last hour",
-          footerIcon: "ti-timer"
-        },
-        {
-          type: "info",
-          icon: "ti-twitter-alt",
-          title: "Followers",
-          value: "+45",
-          footerText: "Updated now",
-          footerIcon: "ti-reload"
-        }
-      ],
-      usersChart: {
-        data: {
-          labels: [
-            "9:00AM",
-            "12:00AM",
-            "3:00PM",
-            "6:00PM",
-            "9:00PM",
-            "12:00PM",
-            "3:00AM",
-            "6:00AM"
-          ],
-          series: [
-            [287, 385, 490, 562, 594, 626, 698, 895, 952],
-            [67, 152, 193, 240, 387, 435, 535, 642, 744],
-            [23, 113, 67, 108, 190, 239, 307, 410, 410]
-          ]
-        },
-        options: {
-          low: 0,
-          high: 1000,
-          showArea: true,
-          height: "245px",
-          axisX: {
-            showGrid: false
-          },
-          lineSmooth: Chartist.Interpolation.simple({
-            divisor: 3
-          }),
-          showLine: true,
-          showPoint: false
-        }
-      },
       activityChart: {
         data: {
           labels: [
@@ -189,8 +167,21 @@ export default {
         options: {}
       }
     };
+  },
+  computed: {
+    ...mapGetters(["funds", "weather"]),
+    weatherData() {
+      return {
+        labels: [
+          this.weather.temperatureHistory.map(temp => moment(temp.date).format('hh:mm a'))
+        ],
+        series: [this.weather.temperatureHistory.map(temp => temp.temperature)]
+      };
+    }
+  },
+  methods: {
+    ...mapActions(["addFunds", "fetchWeatherData"])
   }
 };
 </script>
-<style>
-</style>
+<style></style>
