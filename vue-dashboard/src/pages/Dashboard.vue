@@ -44,14 +44,14 @@
             :class="`icon-warning`"
             slot="header"
           >
-            <img v-if="weather.icon" :src="weather.icon" />
+            <img v-if="weather2.icon" :src="weather2.icon" />
           </div>
           <div class="numbers" slot="content">
-            <p>{{ weather.type }}</p>
-            {{ weather.temperature }}°C
+            <p>{{ weather2.type }}</p>
+            {{ weather2.temperature }}°C
           </div>
           <div class="stats" slot="footer">
-            <i class="ti-reload"></i> {{ weather.description }}
+            <i class="ti-reload"></i> {{ weather2.description }}
           </div>
         </stats-card>
       </div>
@@ -129,6 +129,7 @@ export default {
   },
   created() {
     this.fetchWeatherData();
+    this.fetchWeatherData2();
     this.weatherDataOptions = {
       low: -30,
       high: 50,
@@ -199,7 +200,7 @@ export default {
     }
   },
   methods: {
-    ...mapActions(["addFunds", "fetchWeatherData"])
+    ...mapActions(["addFunds", "fetchWeatherData", "fetchWeatherData2"])
   }
 };
 </script>
