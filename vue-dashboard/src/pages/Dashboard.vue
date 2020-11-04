@@ -37,6 +37,25 @@
           </div>
         </stats-card>
       </div>
+      <div class="col-md-6 col-xl-3">
+        <stats-card>
+          <div
+            class="icon-big text-center"
+            :class="`icon-warning`"
+            slot="header"
+          >
+            <img v-if="weather.icon" :src="weather.icon" />
+          </div>
+          <div class="numbers" slot="content">
+            <p>{{ weather.type }}</p>
+            {{ weather.temperature }}°C
+          </div>
+          <div class="stats" slot="footer">
+            <i class="ti-reload"></i> {{ weather.description }}
+          </div>
+        </stats-card>
+      </div>
+      
     </div>
 
     <!--Charts-->
@@ -169,7 +188,7 @@ export default {
     };
   },
   computed: {
-    ...mapGetters(["funds", "weather"]),
+    ...mapGetters(["funds", "weather","weather2"]),
     weatherData() {
       return {
         labels: [

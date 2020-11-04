@@ -1,6 +1,6 @@
 const API_URL = 'https://api.openweathermap.org';
 const API_KEY = 'c7c7e873b79cc2d2a756f17fb00849ab';
-const CITY_ID = [3186886,5132143];
+const CITY_ID = 5132143;
 
 const state = {
     temperature: 0,
@@ -30,18 +30,18 @@ const mutations = {
 };
 
 const actions = {
-    async fetchWeatherData({ commit }) {
-        const response = await fetch(`${API_URL}/data/2.5/weather?id=${CITY_ID[0]}&appid=${API_KEY}`);
-        const responseData = await response.json();
-        commit('SET_TEMPERATURE', Math.round(responseData.main.temp - 273.15));
-        commit('SET_DESCRIPTION', responseData.weather[0].description);
-        commit('SET_TYPE', responseData.weather[0].main);
-        commit('SET_ICON', `${API_URL}/img/w/${responseData.weather[0].icon}.png`);
-    }
+  async fetchWeatherData({ commit }) {
+      const response = await fetch(`${API_URL}/data/2.5/weather?id=${CITY_ID}&appid=${API_KEY}`);
+      const responseData = await response.json();
+      commit('SET_TEMPERATURE', Math.round(responseData.main.temp - 273.15));
+      commit('SET_DESCRIPTION', responseData.weather[0].description);
+      commit('SET_TYPE', responseData.weather[0].main);
+      commit('SET_ICON', `${API_URL}/img/w/${responseData.weather[0].icon}.png`);
+  }
 };
 
 const getters = {
-  weather(state) {
+  weather2(state) {
     return state;
   }
 };
