@@ -4,7 +4,6 @@ import VuexPersist from 'vuex-persist';
 
 import data from './modules/data';
 import weather from './modules/weather';
-import weather2 from './modules/weather2';
 
 Vue.use(Vuex);
 
@@ -20,8 +19,7 @@ const vuexLocalStorage = new VuexPersist({
 export default new Vuex.Store({
   modules: {
     data,
-    weather,
-    weather2
+    weather
   },
   plugins: [vuexLocalStorage.plugin]
 });

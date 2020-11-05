@@ -1,68 +1,11 @@
 <template>
   <div>
-    <div class="row">
-      <div class="col-md-6 col-xl-3">
-        <stats-card>
-          <div
-            class="icon-big text-center"
-            :class="`icon-warning`"
-            slot="header"
-          >
-            <img v-if="weather.icon" :src="weather.icon" />
-          </div>
-          <div class="numbers" slot="content">
-            <p>{{ weather.type }}</p>
-            {{ weather.temperature }}°C
-          </div>
-          <div class="stats" slot="footer">
-            <i class="ti-reload"></i> {{ weather.description }}
-          </div>
-        </stats-card>
-      </div>
-      <div class="col-md-6 col-xl-3">
-        <stats-card>
-          <div
-            class="icon-big text-center"
-            :class="`icon-warning`"
-            slot="header"
-          >
-            <img v-if="weather.icon" :src="weather.icon" />
-          </div>
-          <div class="numbers" slot="content">
-            <p>{{ weather.type }}</p>
-            {{ weather.temperature }}°C
-          </div>
-          <div class="stats" slot="footer">
-            <i class="ti-reload"></i> {{ weather.description }}
-          </div>
-        </stats-card>
-      </div>
-      <div class="col-md-6 col-xl-3">
-        <stats-card>
-          <div
-            class="icon-big text-center"
-            :class="`icon-warning`"
-            slot="header"
-          >
-            <img v-if="weather2.icon" :src="weather2.icon" />
-          </div>
-          <div class="numbers" slot="content">
-            <p>{{ weather2.type }}</p>
-            {{ weather2.temperature }}°C
-          </div>
-          <div class="stats" slot="footer">
-            <i class="ti-reload"></i> {{ weather2.description }}
-          </div>
-        </stats-card>
-      </div>
-      
-    </div>
-
+    <WeatherContainer />
     <!--Charts-->
     <div class="row">
       <div class="col-12">
         <chart-card
-          :key="weather.temperatureHistory.length"
+          :key="1"
           :title="'Users behavior'"
           sub-title="24 Hours performance"
           :chart-data="weatherData"
@@ -117,19 +60,18 @@
   </div>
 </template>
 <script>
-import { mapGetters, mapActions } from "vuex";
 import { StatsCard, ChartCard } from "@/components";
 import Chartist from "chartist";
 import moment from 'moment';
+import WeatherContainer from '@/layout/dashboard/WeatherContainer';
 
 export default {
   components: {
     StatsCard,
-    ChartCard
+    ChartCard,
+    WeatherContainer
   },
   created() {
-    this.fetchWeatherData();
-    this.fetchWeatherData2();
     this.weatherDataOptions = {
       low: -30,
       high: 50,
@@ -189,19 +131,15 @@ export default {
     };
   },
   computed: {
-    ...mapGetters(["funds", "weather","weather2"]),
     weatherData() {
       return {
         labels: [
-          this.weather.temperatureHistory.map(temp => moment(temp.date).format('hh:mm a'))
+          ['0']
         ],
-        series: [this.weather.temperatureHistory.map(temp => temp.temperature)]
+        series: [1]
       };
     }
   },
-  methods: {
-    ...mapActions(["addFunds", "fetchWeatherData", "fetchWeatherData2"])
-  }
 };
 </script>
 <style></style>
