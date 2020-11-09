@@ -1,8 +1,8 @@
 <template>
     <BasicCard 
-        :subtitle="callStockJavaScript.ticker"
-        :description="callStockJavaScript.date"
-        :title="callStockJavaScript.price"
+        :subtitle="stockData.ticker"
+        :description="stockData.date"
+        :title="stockData.price"
         :icon="''"
     />
 </template>
@@ -20,16 +20,17 @@ const initStockData = {
 
 export default {
     name: 'StockCard',
+    props: ['ticker'],
     created() {
-        this.fetchStockData();
+        this.fetchStockData(this.ticker);
     },
     computed: {
         ...mapGetters(['stocks']),
-        callStockJavaScript() {
-            if (!this.stocks) {           // if API pull in stocks.js doesn't work, intiailize the stock data
+        stockData() {
+            if (!this.stocks || !this.stocks[this.ticker]) {           // if API pull in stocks.js doesn't work, intiailize the stock data
                 return initStockData;
             }
-            return this.stocks;
+            return this.stocks[this.ticker];
         }
     },
     methods: {

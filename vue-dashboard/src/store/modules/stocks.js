@@ -1,5 +1,8 @@
-const API_URL = "https://www.alphavantage.co/query?function=TIME_SERIES_DAILY&symbol=IBM&apikey=";
-const API_KEY = "demo";
+const API_KEY = "IXCPLS60VADF35UA";
+
+function apiUrl(ticker) {
+  return `https://www.alphavantage.co/query?function=TIME_SERIES_DAILY&symbol=${ticker}&apikey=${API_KEY}`;
+}
 
 const initStockData = {
   ticker: "",
@@ -9,57 +12,76 @@ const initStockData = {
 };
 
 const state = {
-    stockData: {}
+  stocksWatching: ["FB", "IBM"],
+  stockData: {}
 };
 
 const mutations = {
-    SET_STOCK_DATA(state, { stocks }) {
-      if (!state.stockData) {
-        state.stockData[cityId] = { ...initStockData };
-      }
-      state.stockData.price = stocks.price;
-      state.stockData.stockHistory.push({
-        date: new Date(),
-        price: stocks.price
-      });
-      state.stockData.date = stocks.date;
-      state.stockData.ticker = stocks.ticker;
-      //state.stockData.icon = stocks.icon;
+  SET_STOCK_DATA(state, stock) {
+    if (!state.stockData[stock.ticker]) {
+      state.stockData[stock.ticker] = { ...initStockData };
     }
-};  
-
-const actions = {
-  async fetchStockData({ commit }) {
-    try {
-      const response = await fetch(
-        `${API_URL}${API_KEY}`
-      );
-      const responseData = await response.json();
-      console.log(responseData);
-      const stockData = {
-        ticker: responseData.["Meta Data"]
-        //date: responseData.weather[0].description,
-        //price: responseData.weather[0].main,
-      };
-      commit("SET_STOCK_DATA", { stocks: stockData });
-    } catch (e) {
-        console.log('error pulling stock API in stocks.js')
-    } 
+    state.stockData[stock.ticker].price = stock.price;
+    state.stockData[stock.ticker].date = stock.date;
+    state.stockData[stock.ticker].ticker = stock.ticker;
+    state.stockData[stock.ticker].stockHistory.push({
+      date: new Date(),
+      price: stock.price
+    });
+  },
+  ADD_STCOK_TO_LIST(state, ticker) {
+    if (state.stocksWatching.includes(ticker)) {
+      return;
+    }
+    state.stocksWatching.push(ticker);
+  },
+  REMOVE_STOCK_FROM_LIST(state, ticker) {
+    if (!state.stocksWatching.includes(ticker)) {
+      return;
+    }
+    state.stocksWatching.splice(state.stocksWatching.indexOf(ticker), 1);
   }
 };
 
-
-
+const actions = {
+  async fetchStockData({ commit }, ticker) {
+    try {
+      const response = await fetch(apiUrl(ticker));
+      const responseData = await response.json();
+      const lastRefreshed = responseData["Meta Data"]["3. Last Refreshed"];
+      const lastClosedPrice = parseFloat(
+        responseData["Time Series (Daily)"][lastRefreshed]["4. close"]
+      );
+      const stock = {
+        ticker: responseData["Meta Data"]["2. Symbol"],
+        price: lastClosedPrice,
+        date: lastRefreshed
+      };
+      commit("SET_STOCK_DATA", stock);
+    } catch (e) {
+      console.log("error pulling stock API in stocks.js");
+    }
+  },
+  addStockToList({ commit }, ticker) {
+    commit("ADD_STCOK_TO_LIST", ticker);
+  },
+  removeStockFromList({ commit }, ticker) {
+    commit("REMOVE_STOCK_FROM_LIST", ticker);
+  }
+};
 
 const getters = {
-    stocks(state) {
-      return state.stockData;
-    }
-  };
-  
-  export default {
-    state,
-    mutations,
-    actions,
-    getters
-  };
+  stocks(state) {
+    return state.stockData;
+  },
+  stocksWatching(state) {
+    return state.stocksWatching;
+  }
+};
+
+export default {
+  state,
+  mutations,
+  actions,
+  getters
+};
