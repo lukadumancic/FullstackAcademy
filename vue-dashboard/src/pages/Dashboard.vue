@@ -1,6 +1,7 @@
 <template>
   <div>
     <WeatherContainer />
+    <StockCard />
     <!--Charts-->
     <div class="row">
       <div class="col-12">
@@ -64,12 +65,14 @@ import { StatsCard, ChartCard } from "@/components";
 import Chartist from "chartist";
 import moment from 'moment';
 import WeatherContainer from '@/layout/dashboard/WeatherContainer';
+import StockCard from '@/components/custom/StockCard';
 
 export default {
   components: {
     StatsCard,
     ChartCard,
-    WeatherContainer
+    WeatherContainer,
+    StockCard
   },
   created() {
     this.weatherDataOptions = {
