@@ -1,6 +1,9 @@
 <template>
   <div class="col-md-6 col-xl-3">
     <StatsCard>
+      <div class="icon-big text-left" slot="header">
+        <p>{{ cardType }}</p>
+      </div>
       <div class="icon-big text-center" :class="`icon-warning`" slot="header">
         <img v-if="icon" :src="icon" />
       </div>
@@ -20,7 +23,7 @@ import { StatsCard } from "@/components";
 
 export default {
   name: "BasicCard",
-  props: ['subtitle', 'title', 'description', 'icon'],
+  props: ['subtitle', 'title', 'description', 'icon','cardType'],
   components: {
       StatsCard
   }

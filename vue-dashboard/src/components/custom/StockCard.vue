@@ -1,5 +1,6 @@
 <template>
     <BasicCard 
+        :cardType=" 'Stocks' "
         :subtitle="stockData.ticker"
         :description="stockData.date"
         :title="'$' + stockData.price"

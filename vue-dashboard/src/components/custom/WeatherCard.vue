@@ -1,6 +1,7 @@
 
 <template>
     <BasicCard 
+        :cardType=" 'Weather' "
         :subtitle="cityWeather.type"
         :description="cityWeather.description"
         :title="cityWeather.temperature + '°C'"

@@ -42,8 +42,11 @@ export default {
   methods: {
     ...mapActions(["addWeatherToList", "removeWeatherFromList"]),
     submit() {
+        if ((this.newCityID.length !== 7)){
+            return;
+        }
       this.addWeatherToList(this.newCityID);
-      this.newCityID = "";
+      this.newCityID = ""; 
     }
   },
   computed: {
