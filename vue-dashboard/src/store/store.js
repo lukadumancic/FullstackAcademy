@@ -5,6 +5,7 @@ import VuexPersist from 'vuex-persist';
 import data from './modules/data';
 import weather from './modules/weather';
 import stocks from './modules/stocks';
+
 Vue.use(Vuex);
 
 const vuexLocalStorage = new VuexPersist({

@@ -1,6 +1,6 @@
 <template>
   <div class="row">
-    <WeatherCard v-for="cityId in cities" :cityId="cityId" />
+    <WeatherCard v-for="cityId in cities" :cityId="cityId" />      
   </div>
 </template>
 
@@ -10,7 +10,7 @@ import WeatherCard from '@/components/custom/WeatherCard';
 export default {
   name: "WeatherContainer",
   computed: {
-      ...mapGetters(['cities'])
+      ...mapGetters(['weather','cities'])
   },
   components: {
       WeatherCard

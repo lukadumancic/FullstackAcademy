@@ -2,7 +2,7 @@
     <BasicCard 
         :subtitle="stockData.ticker"
         :description="stockData.date"
-        :title="stockData.price"
+        :title="'$' + stockData.price"
         :icon="''"
     />
 </template>

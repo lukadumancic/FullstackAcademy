@@ -27,6 +27,18 @@ const mutations = {
     state.weatherData[cityId].description = weather.description;
     state.weatherData[cityId].type = weather.type;
     state.weatherData[cityId].icon = weather.icon;
+  },
+  ADD_WEATHER_TO_LIST(state, cityId) {
+    if (state.cityIds.includes(cityId)) {        // If an already stored cityID is entered, return nothing
+      return;
+    }
+    state.cityIds.push(cityId);                  // add new cityID to state.cities
+  },
+  REMOVE_WEATHER_FROM_LIST(state, cityId) {
+    if (!state.cityIds.includes(cityId)) {
+      return;
+    }
+    state.cityIds.splice(state.cityIds.indexOf(cityId), 1);
   }
 };
 
@@ -45,6 +57,12 @@ const actions = {
       };
       commit("SET_WEATHER_DATA", { cityId, weather: weatherData });
     } catch (e) {}
+  },
+  addWeatherToList({ commit }, cityId) {
+    commit("ADD_WEATHER_TO_LIST", cityId);
+  },
+  removeWeatherFromList({ commit }, cityId) {
+    commit("REMOVE_WEATHER_FROM_LIST", cityId);
   }
 };
 
