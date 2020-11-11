@@ -49,6 +49,7 @@ const mutations = {
       return;
     }
     state.stocksWatching.push(ticker);
+    Vue.set(state.stockData, ticker, { ...initStockData, ticker });
   },
   REMOVE_STOCK_FROM_LIST(state, ticker) {
     if (!state.stocksWatching.includes(ticker)) {
@@ -79,7 +80,6 @@ const actions = {
   },
   addStockToList({ commit }, ticker) {
     commit("ADD_STOCK_TO_LIST", ticker);
-    commit("SET_STOCK_DATA", { ...initStockData, ticker });
   },
   removeStockFromList({ commit }, ticker) {
     commit("REMOVE_STOCK_FROM_LIST", ticker);

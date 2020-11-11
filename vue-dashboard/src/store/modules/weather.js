@@ -44,13 +44,14 @@ const mutations = {
     state.weatherData[cityId].description = weather.description;
     state.weatherData[cityId].type = weather.type;
     state.weatherData[cityId].icon = weather.icon;
-    state = { ...state };
+    Vue.set(state.weatherData, cityId, state.weatherData[cityId]);
   },
   ADD_WEATHER_TO_LIST(state, cityId) {
     if (state.cityIds.includes(cityId)) {
       // If an already stored cityID is entered, return nothing
       return;
     }
+    Vue.set(state.weatherData, cityId, { cityId, weather: initWeatherData });
     state.cityIds.push(cityId); // add new cityID to state.cities
   },
   REMOVE_WEATHER_FROM_LIST(state, cityId) {
@@ -79,7 +80,6 @@ const actions = {
   },
   addWeatherToList({ commit }, cityId) {
     commit("ADD_WEATHER_TO_LIST", cityId);
-    commit("SET_WEATHER_DATA", { cityId, weather: initWeatherData });
   },
   removeWeatherFromList({ commit }, cityId) {
     commit("REMOVE_WEATHER_FROM_LIST", cityId);
