@@ -1,3 +1,5 @@
+import Vue from "vue";
+
 const API_URL = "https://api.openweathermap.org";
 const API_KEY = "c7c7e873b79cc2d2a756f17fb00849ab";
 
@@ -11,7 +13,22 @@ const initWeatherData = {
 
 const state = {
   cityIds: [5132143, 3186886],
-  weatherData: {}
+  weatherData: {
+    5132143: {
+      temperature: 0,
+      description: "",
+      type: "",
+      icon: "",
+      temperatureHistory: []
+    },
+    3186886: {
+      temperature: 0,
+      description: "",
+      type: "",
+      icon: "",
+      temperatureHistory: []
+    }
+  }
 };
 
 const mutations = {
@@ -27,12 +44,14 @@ const mutations = {
     state.weatherData[cityId].description = weather.description;
     state.weatherData[cityId].type = weather.type;
     state.weatherData[cityId].icon = weather.icon;
+    state = { ...state };
   },
   ADD_WEATHER_TO_LIST(state, cityId) {
-    if (state.cityIds.includes(cityId)) {        // If an already stored cityID is entered, return nothing
+    if (state.cityIds.includes(cityId)) {
+      // If an already stored cityID is entered, return nothing
       return;
     }
-    state.cityIds.push(cityId);                  // add new cityID to state.cities
+    state.cityIds.push(cityId); // add new cityID to state.cities
   },
   REMOVE_WEATHER_FROM_LIST(state, cityId) {
     if (!state.cityIds.includes(cityId)) {
@@ -60,6 +79,7 @@ const actions = {
   },
   addWeatherToList({ commit }, cityId) {
     commit("ADD_WEATHER_TO_LIST", cityId);
+    commit("SET_WEATHER_DATA", { cityId, weather: initWeatherData });
   },
   removeWeatherFromList({ commit }, cityId) {
     commit("REMOVE_WEATHER_FROM_LIST", cityId);
@@ -69,6 +89,11 @@ const actions = {
 const getters = {
   weather(state) {
     return state.weatherData;
+  },
+  getWeatherByCityId(state) {
+    return id => {
+      return state.weatherData[id];
+    };
   },
   cities(state) {
     return state.cityIds;

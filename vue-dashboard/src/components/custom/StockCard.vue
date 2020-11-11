@@ -12,13 +12,6 @@
 import { mapGetters, mapActions } from "vuex";
 import BasicCard from './BasicCard';
 
-const initStockData = {
-  ticker: "",
-  date: "",
-  price: 0,
-  stockHistory: []
-};
-
 export default {
     name: 'StockCard',
     props: ['ticker'],
@@ -26,12 +19,9 @@ export default {
         this.fetchStockData(this.ticker);
     },
     computed: {
-        ...mapGetters(['stocks']),
+        ...mapGetters(['getStockByTicker']),
         stockData() {
-            if (!this.stocks || !this.stocks[this.ticker]) {           // if API pull in stocks.js doesn't work, intiailize the stock data
-                return initStockData;
-            }
-            return this.stocks[this.ticker];
+            return this.getStockByTicker(this.ticker);
         }
     },
     methods: {

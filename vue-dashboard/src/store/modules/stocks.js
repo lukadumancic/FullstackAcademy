@@ -1,3 +1,4 @@
+import Vue from "vue";
 const API_KEY = "IXCPLS60VADF35UA";
 
 function apiUrl(ticker) {
@@ -13,7 +14,20 @@ const initStockData = {
 
 const state = {
   stocksWatching: ["FB", "IBM"],
-  stockData: {}
+  stockData: {
+    FB: {
+      ticker: "",
+      date: "",
+      price: 0,
+      stockHistory: []
+    },
+    IBM: {
+      ticker: "",
+      date: "",
+      price: 0,
+      stockHistory: []
+    }
+  }
 };
 
 const mutations = {
@@ -28,8 +42,9 @@ const mutations = {
       date: new Date(),
       price: stock.price
     });
+    Vue.set(state.stockData, stock.ticker, state.stockData[stock.ticker]);
   },
-  ADD_STCOK_TO_LIST(state, ticker) {
+  ADD_STOCK_TO_LIST(state, ticker) {
     if (state.stocksWatching.includes(ticker)) {
       return;
     }
@@ -59,11 +74,12 @@ const actions = {
       };
       commit("SET_STOCK_DATA", stock);
     } catch (e) {
-      console.log("error pulling stock API in stocks.js");
+      console.log(e);
     }
   },
   addStockToList({ commit }, ticker) {
-    commit("ADD_STCOK_TO_LIST", ticker);
+    commit("ADD_STOCK_TO_LIST", ticker);
+    commit("SET_STOCK_DATA", { ...initStockData, ticker });
   },
   removeStockFromList({ commit }, ticker) {
     commit("REMOVE_STOCK_FROM_LIST", ticker);
@@ -73,6 +89,11 @@ const actions = {
 const getters = {
   stocks(state) {
     return state.stockData;
+  },
+  getStockByTicker(state) {
+    return ticker => {
+      return state.stockData[ticker];
+    };
   },
   stocksWatching(state) {
     return state.stocksWatching;
