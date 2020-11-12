@@ -8,7 +8,6 @@ const initWeatherData = {
   description: "",
   type: "",
   icon: "",
-  temperatureHistory: []
 };
 
 const state = {
@@ -19,16 +18,15 @@ const state = {
       description: "",
       type: "",
       icon: "",
-      temperatureHistory: []
     },
     3186886: {
       temperature: 0,
       description: "",
       type: "",
       icon: "",
-      temperatureHistory: []
     }
-  }
+  },
+  weatherForecast: [1,2,3]
 };
 
 const mutations = {
@@ -59,6 +57,9 @@ const mutations = {
       return;
     }
     state.cityIds.splice(state.cityIds.indexOf(cityId), 1);
+  },
+  ADD_WEATHER_FORECAST(state, weatherForecast) {
+    state.weatherForecast = weatherForecast;
   }
 };
 
@@ -76,6 +77,22 @@ const actions = {
         icon: `${API_URL}/img/w/${responseData.weather[0].icon}.png`
       };
       commit("SET_WEATHER_DATA", { cityId, weather: weatherData });
+    } catch (e) {}
+  },
+  async fetchForecast({ commit }) {
+    try {
+      const response = await fetch(
+        `${API_URL}/data/2.5/onecall?lat=30.489772&lon=-99.771335&units=metric&appid=${API_KEY}`
+      );
+      const responseData = await response.json();
+
+      const forecast = responseData.hourly.map((hourlyData) => {
+        return {
+          temperature: hourlyData.temp,
+          date: new Date(hourlyData.dt * 1000)
+        }
+      });
+      commit("ADD_WEATHER_FORECAST", forecast);
     } catch (e) {}
   },
   addWeatherToList({ commit }, cityId) {
@@ -97,6 +114,9 @@ const getters = {
   },
   cities(state) {
     return state.cityIds;
+  },
+  weatherForecast(state) {
+    return state.weatherForecast;
   }
 };
 

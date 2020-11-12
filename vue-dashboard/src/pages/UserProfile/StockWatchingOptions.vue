@@ -12,12 +12,11 @@
           />
           <div class="row" v-for="ticker in stocksWatching" :key="ticker">
             <div class="col-3">
-              <div class="icon-container">
-                <span class="ti-wallet"></span>
-              </div>
+              <span class="ti-wallet"></span>
             </div>
             <div class="col-6">
               {{ ticker }}
+              <small>Test</small>
             </div>
 
             <div class="col-3">

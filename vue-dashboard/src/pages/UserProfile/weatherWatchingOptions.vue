@@ -12,9 +12,7 @@
           />
           <div class="row" v-for="cityID in cities" :key="cityID">
             <div class="col-3">
-              <div class="icon-container">
-                <span class="ti-shine"></span>
-              </div>
+              <span class="ti-shine"></span>
             </div>
             <div class="col-6">
               {{ cityID }}
