@@ -1,12 +1,24 @@
 <template>
-  <div :class="{'nav-open': $sidebar.showSidebar}">
+  <div v-if="isLoggedIn" :class="{'nav-open': $sidebar.showSidebar}">
     <notifications></notifications>
     <router-view></router-view>
+  </div>
+  <div v-else>
+    <Login />
   </div>
 </template>
 
 <script>
-export default {};
+import Login from './pages/Login';
+import { mapGetters } from 'vuex';
+export default {
+  computed: {
+    ...mapGetters(['isLoggedIn'])
+  },
+  components: {
+    Login
+  }
+};
 </script>
 
 <style lang="scss">

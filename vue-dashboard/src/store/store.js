@@ -5,6 +5,7 @@ import VuexPersist from 'vuex-persist';
 import data from './modules/data';
 import weather from './modules/weather';
 import stocks from './modules/stocks';
+import user from './modules/user';
 
 Vue.use(Vuex);
 
@@ -21,7 +22,8 @@ export default new Vuex.Store({
   modules: {
     data,
     weather,
-    stocks
+    stocks,
+    user
   },
   // plugins: [vuexLocalStorage.plugin] remove for now
 });
