@@ -13,6 +13,7 @@
     <input
       :value="value"
       @input="$emit('input',$event.target.value)"
+      v-on:keyup.enter="$emit('submit')"
       v-bind="$attrs"
       class="form-control"
       aria-describedby="addon-right addon-left">

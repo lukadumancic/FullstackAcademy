@@ -1,22 +1,20 @@
 <template>
   <card class="card-user">
     <div slot="image">
-      <img src="@/assets/img/background.jpg" alt="...">
+      <img src="https://d2gg9evh47fn9z.cloudfront.net/thumb_COLOURBOX8327018.jpg" alt="...">
     </div>
     <div>
       <div class="author">
-        <img class="avatar border-white" src="@/assets/img/faces/face-2.jpg" alt="...">
-        <h4 class="title">Chet Faker
+        <img class="avatar border-white" src="https://avatars1.githubusercontent.com/u/17359568?s=400&u=bd29c762b0770453a42979ac1beae71965c2ff95&v=4" alt="...">
+        <h4 class="title">Luka Dumančić
           <br>
           <a href="#">
-            <small>@chetfaker</small>
+            <small>GIT:lukadumancic</small>
           </a>
         </h4>
       </div>
       <p class="description text-center">
-        "I like the way you work it
-        <br> No diggity
-        <br> I wanna bag it up"
+        "Luka is too good at coding!"
       </p>
     </div>
     <hr>
