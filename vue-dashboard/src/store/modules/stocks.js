@@ -27,7 +27,7 @@ const state = {
       price: 0,
       stockHistory: []
     }
-  }
+  },
 };
 
 const mutations = {
