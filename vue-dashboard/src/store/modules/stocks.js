@@ -9,7 +9,6 @@ const initStockData = {
   ticker: "",
   date: "",
   price: 0,
-  stockHistory: []
 };
 
 const state = {
@@ -19,15 +18,14 @@ const state = {
       ticker: "",
       date: "",
       price: 0,
-      stockHistory: []
     },
     IBM: {
       ticker: "",
       date: "",
-      price: 0,
-      stockHistory: []
+      price: 0
     }
   },
+  stockHistory: []
 };
 
 const mutations = {
@@ -38,11 +36,10 @@ const mutations = {
     state.stockData[stock.ticker].price = stock.price;
     state.stockData[stock.ticker].date = stock.date;
     state.stockData[stock.ticker].ticker = stock.ticker;
-    state.stockData[stock.ticker].stockHistory.push({
-      date: new Date(),
-      price: stock.price
-    });
     Vue.set(state.stockData, stock.ticker, state.stockData[stock.ticker]);
+  },
+  SET_STOCK_HISTORY(state, stockHistory) {
+    state.stockHistory = stockHistory;
   },
   ADD_STOCK_TO_LIST(state, ticker) {
     if (state.stocksWatching.includes(ticker)) {
@@ -78,6 +75,15 @@ const actions = {
       console.log(e);
     }
   },
+  async fetchHistoryData({ commit }, ticker) {
+    try {
+      const response = await fetch(apiUrl(ticker));
+      const responseData = await response.json();
+      commit("SET_STOCK_HISTORY", responseData["Time Series (Daily)"]);
+    } catch (e) {
+      console.log(e);
+    }
+  },
   addStockToList({ commit }, ticker) {
     commit("ADD_STOCK_TO_LIST", ticker);
   },
@@ -97,6 +103,9 @@ const getters = {
   },
   stocksWatching(state) {
     return state.stocksWatching;
+  },
+  stockHistory(state) {
+    return state.stockHistory;
   }
 };
 
