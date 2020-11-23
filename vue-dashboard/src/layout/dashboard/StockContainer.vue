@@ -3,6 +3,7 @@
     <div class="row">
       <StockCard v-for="ticker in stocksWatching" :ticker="ticker" />
     </div>
+     <!--LINE CHART-->
     <div class="row">
       <div class="col-12">
         <ChartCard
@@ -13,15 +14,31 @@
           :chart-options="graphData.options"
         >
           <span slot="footer">
-            <i class="ti-reload"></i> Updated 3 minutes ago
+            <i class="ti-reload"></i> Updated now
           </span>
-          <div slot="legend">
+          <div slot="legend">    
             <i class="fa fa-circle text-info"></i> Stock 1
             <i class="fa fa-circle text-danger"></i> Stock 2
             <i class="fa fa-circle text-warning"></i> Stock 3
           </div>
         </ChartCard>
       </div>
+    </div>
+    <!--PIE CHART-->
+    <div class="col-md-6 col-12">
+      <ChartCard
+        v-if="pieData.preferencesChart.data.labels.length"
+        :title="'Stock Porfolio'"
+        :sub-title="'Todays porfolio value'"
+        :chart-data="pieData.preferencesChart.data"
+        chart-type="Pie"
+      >
+        <span slot="footer">
+          <i class="ti-timer"></i> Updated now</span
+        >
+        <div slot="legend">
+        </div>
+      </ChartCard>
     </div>
   </div>
 </template>
@@ -37,6 +54,7 @@ export default {
   },
   computed: {
     ...mapGetters(["stocks", "stocksWatching", "stockHistory"]),
+    // LINE CHART DATA
     graphData() {
       const labels = Object.keys(this.stockHistory)
         .filter((value, index) => {
@@ -66,7 +84,23 @@ export default {
           height: "245px"
         }
       };
-    }
+    },
+    // PIE CHART DATA
+  pieData() {
+     /*
+      for ticker in this.stocksWatching{
+        let prices = [].push(this.stocks.ticker.price);
+      } */
+    return {
+      preferencesChart: {
+        data: {
+          labels: this.stocksWatching,
+          series: [this.stocks.FB.price, this.stocks.IBM.price ]
+        },
+        options: {}
+      }
+    };
+  },
   },
   methods: {
     ...mapActions(["fetchHistoryData"])
