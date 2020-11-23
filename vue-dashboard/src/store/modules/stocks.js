@@ -1,5 +1,6 @@
 import Vue from "vue";
-const API_KEY = "IXCPLS60VADF35UA";
+import dummyStockData from "../../assets/dummyStockData";
+const API_KEY = "0I5LPFJMZJXT0EXF";
 
 function apiUrl(ticker) {
   return `https://www.alphavantage.co/query?function=TIME_SERIES_DAILY&symbol=${ticker}&apikey=${API_KEY}`;
@@ -60,13 +61,16 @@ const actions = {
   async fetchStockData({ commit }, ticker) {
     try {
       const response = await fetch(apiUrl(ticker));
-      const responseData = await response.json();
+      let responseData = await response.json();
+      if (responseData["Note"]) {
+        responseData = dummyStockData;
+      }
       const lastRefreshed = responseData["Meta Data"]["3. Last Refreshed"];
       const lastClosedPrice = parseFloat(
         responseData["Time Series (Daily)"][lastRefreshed]["4. close"]
       );
       const stock = {
-        ticker: responseData["Meta Data"]["2. Symbol"],
+        ticker,
         price: lastClosedPrice,
         date: lastRefreshed
       };
