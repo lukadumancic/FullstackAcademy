@@ -7,7 +7,7 @@
       <div class="col-12">
         <ChartCard
           :key="weatherForecast.length"
-          :title="'Users behavior'"
+          :title="'Temperature (°C)'"
           sub-title="24 Hours performance"
           :chart-data="graphData.data"
           :chart-options="graphData.options"
@@ -16,9 +16,9 @@
             <i class="ti-reload"></i> Updated 3 minutes ago
           </span>
           <div slot="legend">
-            <i class="fa fa-circle text-info"></i> Open
-            <i class="fa fa-circle text-danger"></i> Click
-            <i class="fa fa-circle text-warning"></i> Click Second Time
+            <i class="fa fa-circle text-info"></i> City 1
+            <i class="fa fa-circle text-danger"></i> City 2
+            <i class="fa fa-circle text-warning"></i> City 3
           </div>
         </ChartCard>
       </div>

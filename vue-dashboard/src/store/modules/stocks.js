@@ -1,5 +1,6 @@
 import Vue from "vue";
-const API_KEY = "IXCPLS60VADF35UA";
+import dummyStockData from "../../assets/dummyStockData";
+const API_KEY = "0I5LPFJMZJXT0EXF";
 
 function apiUrl(ticker) {
   return `https://www.alphavantage.co/query?function=TIME_SERIES_DAILY&symbol=${ticker}&apikey=${API_KEY}`;
@@ -9,7 +10,6 @@ const initStockData = {
   ticker: "",
   date: "",
   price: 0,
-  stockHistory: []
 };
 
 const state = {
@@ -19,15 +19,14 @@ const state = {
       ticker: "",
       date: "",
       price: 0,
-      stockHistory: []
     },
     IBM: {
       ticker: "",
       date: "",
-      price: 0,
-      stockHistory: []
+      price: 0
     }
-  }
+  },
+  stockHistory: []
 };
 
 const mutations = {
@@ -38,11 +37,10 @@ const mutations = {
     state.stockData[stock.ticker].price = stock.price;
     state.stockData[stock.ticker].date = stock.date;
     state.stockData[stock.ticker].ticker = stock.ticker;
-    state.stockData[stock.ticker].stockHistory.push({
-      date: new Date(),
-      price: stock.price
-    });
     Vue.set(state.stockData, stock.ticker, state.stockData[stock.ticker]);
+  },
+  SET_STOCK_HISTORY(state, stockHistory) {
+    state.stockHistory = stockHistory;
   },
   ADD_STOCK_TO_LIST(state, ticker) {
     if (state.stocksWatching.includes(ticker)) {
@@ -63,17 +61,29 @@ const actions = {
   async fetchStockData({ commit }, ticker) {
     try {
       const response = await fetch(apiUrl(ticker));
-      const responseData = await response.json();
+      let responseData = await response.json();
+      if (responseData["Note"]) {
+        responseData = dummyStockData;
+      }
       const lastRefreshed = responseData["Meta Data"]["3. Last Refreshed"];
       const lastClosedPrice = parseFloat(
         responseData["Time Series (Daily)"][lastRefreshed]["4. close"]
       );
       const stock = {
-        ticker: responseData["Meta Data"]["2. Symbol"],
+        ticker,
         price: lastClosedPrice,
         date: lastRefreshed
       };
       commit("SET_STOCK_DATA", stock);
+    } catch (e) {
+      console.log(e);
+    }
+  },
+  async fetchHistoryData({ commit }, ticker) {
+    try {
+      const response = await fetch(apiUrl(ticker));
+      const responseData = await response.json();
+      commit("SET_STOCK_HISTORY", responseData["Time Series (Daily)"]);
     } catch (e) {
       console.log(e);
     }
@@ -97,6 +107,9 @@ const getters = {
   },
   stocksWatching(state) {
     return state.stocksWatching;
+  },
+  stockHistory(state) {
+    return state.stockHistory;
   }
 };
 
