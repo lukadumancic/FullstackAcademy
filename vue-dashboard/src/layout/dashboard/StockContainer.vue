@@ -24,13 +24,29 @@
         </ChartCard>
       </div>
     </div>
-    <!--PIE CHART-->
+    <!--PIE CHART 1-->
     <div class="col-md-6 col-12">
       <ChartCard
         v-if="pieData.preferencesChart.data.labels.length"
-        :title="'Stock Porfolio'"
-        :sub-title="'Todays porfolio value'"
-        :chart-data="pieData.preferencesChart.data"
+        :title="'Stocks Watching'"
+        :sub-title="'Todays stock prices'"
+        :chart-data="pieData.preferencesChart.dataNow"
+        chart-type="Pie"
+      >
+        <span slot="footer">
+          <i class="ti-timer"></i> Updated now</span
+        >
+        <div slot="legend">
+        </div>
+      </ChartCard>
+    </div>
+    <!--PIE CHART 2-->
+    <div class="col-md-6 col-12">
+      <ChartCard
+        v-if="pieData.preferencesChart.data.labels.length"
+        :title="'Stock Watching - 30 Days Prior'"
+        :sub-title="'Stock prices 30 days prior'"
+        :chart-data="pieData.preferencesChart.dataPrior"
         chart-type="Pie"
       >
         <span slot="footer">
@@ -85,17 +101,28 @@ export default {
         }
       };
     },
-    // PIE CHART DATA
+  // PIE CHART DATA
   pieData() {
-     /*
-      for ticker in this.stocksWatching{
-        let prices = [].push(this.stocks.ticker.price);
-      } */
+    const priorMonth = Object.keys(this.stockHistory)
+        .filter((value, index) => {
+          return index == 30;
+        });
     return {
       preferencesChart: {
-        data: {
+        dataNow: {
           labels: this.stocksWatching,
           series: [this.stocks.FB.price, this.stocks.IBM.price ]
+        },
+        dataPrior: {
+          labels: this.stocksWatching,
+          series: [
+            priorMonth.map(label =>
+              parseFloat(this.stockHistory[label]["4. close"])
+            ),
+            priorMonth.map(label =>
+              parseFloat(this.stockHistory[label]["4. close"])
+            )
+          ]
         },
         options: {}
       }
