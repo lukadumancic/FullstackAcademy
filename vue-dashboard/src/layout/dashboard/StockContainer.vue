@@ -22,23 +22,43 @@
         </ChartCard>
       </div>
     </div>
-    <!--PIE CHART-->
-    <div class="col-md-6 col-12">
-      <ChartCard
-        v-if="pieData"
-        :title="'Stock Porfolio'"
-        :sub-title="'Todays porfolio value'"
-        :chart-data="pieData.data"
-        chart-type="Pie"
-      >
-        <span slot="footer"> <i class="ti-timer"></i> Updated now</span>
-        <div slot="legend">
-          <span v-for="(label, index) in pieData.data.labels">
-            <i :class="'fa fa-circle ' + legendClasses[index]"></i>
-            <span>{{ label }}</span>
-          </span>
-        </div>
-      </ChartCard>
+    <!--PIE CHART 1-->
+    <div class="row">
+      <div class="col-md-6 col-12">
+        <ChartCard
+          v-if="pieData"
+          :title="'Stock Porfolio'"
+          :sub-title="'Todays porfolio value'"
+          :chart-data="pieData.data"
+          chart-type="Pie"
+        >
+          <span slot="footer"> <i class="ti-timer"></i> Updated now</span>
+          <div slot="legend">
+            <span v-for="(label, index) in pieData.data.labels">
+              <i :class="'fa fa-circle ' + legendClasses[index]"></i>
+              <span>{{ label }}</span>
+            </span>
+          </div>
+        </ChartCard>
+      </div>
+      <!--PIE CHART 2-->
+      <div class="col-md-6 col-12">
+        <ChartCard
+          v-if="pieData"
+          :title="'Stock Watching - 30 Days Prior'"
+          :sub-title="'Stock prices 30 days prior'"
+          :chart-data="pieData.dataPrior"
+          chart-type="Pie"
+        >
+          <span slot="footer"> <i class="ti-timer"></i> Updated now</span>
+          <div slot="legend">
+            <span v-for="(label, index) in pieData.dataPrior.labels">
+              <i :class="'fa fa-circle ' + legendClasses[index]"></i>
+              <span>{{ label }}</span>
+            </span>
+          </div>
+        </ChartCard>
+      </div>
     </div>
   </div>
 </template>
@@ -47,6 +67,7 @@
 import { mapGetters, mapActions } from "vuex";
 import ChartCard from "@/components/Cards/ChartCard";
 import StockCard from "@/components/custom/StockCard";
+
 export default {
   name: "StockContainer",
   created() {
@@ -100,6 +121,12 @@ export default {
         data: {
           labels: this.stocksWatching,
           series: this.stocksWatching.map(ticker => this.stocks[ticker].price)
+        },
+        dataPrior: {
+          labels: this.stocksWatching,
+          series: this.stocksWatching.map(
+            ticker => this.stocks[ticker].price30daysAgo
+          )
         },
         options: {}
       };
