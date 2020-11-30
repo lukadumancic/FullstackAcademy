@@ -6,7 +6,7 @@
           <div class="form-group">
             <label>Username</label>
             <input
-              type="email"
+              type="username"
               class="form-control"
               aria-describedby="emailHelp"
               placeholder="Username"
@@ -20,7 +20,7 @@
               placeholder="Password"
             />
           </div>
-          <button type="submit" class="btn btn-primary">Submit</button>
+          <button type="submit" class="btn btn-primary" @click.preventDefault="handleLogin">Submit</button>
         </Card>
       </form>
     </div>
@@ -28,9 +28,16 @@
 </template>
 
 <script>
+import { mapActions } from 'vuex';
 import Card from "@/components/Cards/Card";
 export default {
   name: "Login",
+  methods: {
+    ...mapActions(['login']),
+    handleLogin() {
+      this.login('username', 'password');
+    }
+  },
   components: {
     Card
   }
