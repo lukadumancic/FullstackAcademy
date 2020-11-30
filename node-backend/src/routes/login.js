@@ -1,19 +1,24 @@
 import jwt from 'jsonwebtoken';
-import verifyToken from "../helpers/verifyToken.js";
+import users from '../models/users.js';
 
+const route = "/api/login";
 
-export default function (app) {
-  app.post("/api/login", (req, res) => {
-    const user = {
-      id: 1,
-      username: "test",
-      email: "brad",
-    };
-
-    jwt.sign({ user }, "SECRET KEY", { expiresIn: "7d" }, (err, token) => {
-      res.json({
-        token,
+export default (app) => {
+  app.post(route, (req, res) => {
+    const { username, password } = req.body;
+    const user = users.get({
+      username,
+      password,
+    })[0];
+    if (user) {
+      jwt.sign({ user }, "SECRET KEY", { expiresIn: "365d" }, (err, token) => {
+        res.send({
+          user,
+          token,
+        });
       });
-    });
+    } else {
+      res.sendStatus(400);
+    }
   });
 }

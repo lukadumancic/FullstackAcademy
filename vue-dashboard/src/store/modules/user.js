@@ -1,5 +1,7 @@
+import apiService from "../../services/apiService";
+
 const state = {
-    isLoggedIn: true,
+    token: '123',
     userData: {}
 };
 
@@ -13,9 +15,11 @@ const mutations = {
 };
 
 const actions = {
-  login({ commit }, user) {
-    // TODO
-    commit('ADD_USER', user);
+  async login({ commit }, user) {
+    const data = await apiService.fetch('http://localhost:3000/api/login', 'POST');
+    const token = data.token;
+    apiService.setToken(token);
+    // commit('ADD_USER', user);
   },
   logout({ commit }) {
     commit('REMOVE_USER');
@@ -27,7 +31,7 @@ const getters = {
     return state.userData;
   },
   isLoggedIn(state) {
-      return state.isLoggedIn
+      return state.token !== null
   }
 };
 
