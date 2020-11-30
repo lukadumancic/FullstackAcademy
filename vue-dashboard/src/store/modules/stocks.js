@@ -10,6 +10,7 @@ const initStockData = {
   ticker: "",
   date: "",
   price: 0,
+  price30daysAgo: 0
 };
 
 const state = {
@@ -19,11 +20,13 @@ const state = {
       ticker: "",
       date: "",
       price: 0,
+      price30daysAgo: 0
     },
     IBM: {
       ticker: "",
       date: "",
-      price: 0
+      price: 0,
+      price30daysAgo: 0
     }
   },
   stockHistory: []
@@ -37,6 +40,7 @@ const mutations = {
     state.stockData[stock.ticker].price = stock.price;
     state.stockData[stock.ticker].date = stock.date;
     state.stockData[stock.ticker].ticker = stock.ticker;
+    state.stockData[stock.ticker].price30daysAgo = stock.price30daysAgo;
     Vue.set(state.stockData, stock.ticker, state.stockData[stock.ticker]);
   },
   SET_STOCK_HISTORY(state, stockHistory) {
@@ -69,8 +73,15 @@ const actions = {
       const lastClosedPrice = parseFloat(
         responseData["Time Series (Daily)"][lastRefreshed]["4. close"]
       );
+      const priorMonth = Object.keys(responseData["Time Series (Daily)"]).filter(
+        (value, index) => {
+          return index == 30;
+        }
+      );
+      const price30daysAgo = parseFloat(responseData["Time Series (Daily)"][priorMonth]["4. close"]);
       const stock = {
         ticker,
+        price30daysAgo,
         price: lastClosedPrice,
         date: lastRefreshed
       };
