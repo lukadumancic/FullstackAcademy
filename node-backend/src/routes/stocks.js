@@ -47,12 +47,6 @@ export default (app) => {
     if (!ticker) {
       return res.sendStatus(400);
     }
-    console.log(
-      stocks.get({
-        userId: req.user.id,
-        ticker: req.params.ticker,
-      })
-    );
     if (
       stocks.get({
         userId: req.user.id,
