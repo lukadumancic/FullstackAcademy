@@ -44,7 +44,11 @@ export default class Storage {
   }
 
   delete(id) {
-    delete this.store[id];
+    if (this.store[id]) {
+      delete this.store[id];
+      return true;
+    }
+    return false;
   }
 
   nextId() {

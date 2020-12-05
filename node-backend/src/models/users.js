@@ -11,17 +11,10 @@ class Stocks extends Storage {
         super();
     }
 
-    update(password) {
-        super.update(id, { password })
-    }
-
     create(username, password) {
         super.create({ username, password });
     }
     
-    delete(id) {
-        super.delete(id);
-    }
 }
 
 export default new Stocks();
