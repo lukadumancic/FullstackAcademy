@@ -11,13 +11,13 @@ class Stocks extends Storage {
         super();
     }
 
-    update(userId, ticker) {
+    update(userId, oldTicker, ticker) {
         const items = super.get({
             userId,
-            ticker
+            ticker: oldTicker
         });
         if (items.length === 1) {
-            super.update(items[0].id, { ticker });
+            super.update(items[0].id, { userId, ticker });
         }
     }
 

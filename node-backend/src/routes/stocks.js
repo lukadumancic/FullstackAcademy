@@ -39,7 +39,7 @@ export default (app) => {
       return res.sendStatus(400);
     }
     stocks.create(req.user.id, ticker);
-    res.send(200);
+    res.sendStatus(200);
   });
 
   app.put(route + "/:ticker", verifyToken, (req, res) => {
@@ -53,7 +53,7 @@ export default (app) => {
         ticker: req.params.ticker,
       }).length === 1
     ) {
-      stocks.update(req.user.id, ticker);
+      stocks.update(req.user.id, req.params.ticker, ticker);
       res.sendStatus(200);
     } else {
       stocks.create(req.user.id, ticker);
@@ -63,6 +63,6 @@ export default (app) => {
 
   app.delete(route + "/:ticker", verifyToken, (req, res) => {
     stocks.delete(req.user.id, req.params.ticker);
-    res.send(200);
+    res.sendStatus(200);
   });
 };
