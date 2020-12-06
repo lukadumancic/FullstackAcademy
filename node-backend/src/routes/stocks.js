@@ -12,6 +12,11 @@ function apiUrl(ticker) {
 const route = "/api/users/:id/stocks";
 
 export default (app) => {
+
+  app.get('/api/stocks', (req, res) => {
+    res.send(stocks.get());
+  });
+
   app.get(route, verifyToken, (req, res) => {
     res.send(stocks.get({ userId: req.user.id }));
   });
