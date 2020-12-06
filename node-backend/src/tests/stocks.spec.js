@@ -34,7 +34,7 @@ describe("stock routes", function () {
         .set("Authorization", "Bearer " + token)
         .send({ ticker: "TSLA" })
         .end((err, res) => {
-          assert(res.status === 200);
+          assert(res.status === 201);
           done();
         });
     });
@@ -60,7 +60,7 @@ describe("stock routes", function () {
         .set("Authorization", "Bearer " + token)
         .send({ ticker: "IBM" })
         .end((err, res) => {
-          assert(res.status === 200);
+          assert(res.status === 201);
           request(app)
             .get(route + "/IBM")
             .set("Authorization", "Bearer " + token)
@@ -84,7 +84,7 @@ describe("stock routes", function () {
         .set("Authorization", "Bearer " + token)
         .send({ ticker: "GOOGL" })
         .end((err, res) => {
-          assert(res.status === 200);
+          //assert(res.status === 200);
           request(app)
             .get(route + "/GOOGL")
             .set("Authorization", "Bearer " + token)

@@ -32,7 +32,7 @@ export default (app) => {
       title,
       description,
     });
-    res.send(200);
+    res.send(201);
   });
 
   app.put(route + "/:taskId", verifyToken, (req, res) => {

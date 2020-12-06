@@ -23,7 +23,7 @@ describe("user routes", function () {
         .post("/api/users")
         .send({ username: "test", password: "test" })
         .end((err, res) => {
-          assert(res.status === 200);
+          assert(res.status === 201);
           request(app)
             .get("/api/users")
             .end((err, res) => {
@@ -37,7 +37,7 @@ describe("user routes", function () {
         .post("/api/users")
         .send({ username: "test1", password: "test" })
         .end((err, res) => {
-          assert(res.status === 200);
+          assert(res.status === 201);
           request(app)
             .post("/api/users")
             .send({ username: "test1", password: "test" })

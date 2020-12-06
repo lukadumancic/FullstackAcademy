@@ -25,7 +25,7 @@ export default (app) => {
         return res.sendStatus(400);
       } else {
         users.create(username, password);
-        res.sendStatus(200);
+        res.sendStatus(201);
       }
     } else {
       res.sendStatus(400);

@@ -2,6 +2,8 @@ import express from "express";
 import routes from "./routes/index.js";
 import bodyParser from "body-parser";
 import cors from "cors";
+import swaggerUi from "swagger-ui-express";
+import swaggerDocument from "./swagger.json";
 
 const createApp = (port = process.env.PORT || 3000) => {
   const app = express();
@@ -9,9 +11,11 @@ const createApp = (port = process.env.PORT || 3000) => {
   app.use(bodyParser.json());
   app.use(cors());
 
-  app.get("/", (req, res) => {
-    res.send("Hello World!");
-  });
+  app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(swaggerDocument));
+
+  app.get('/', (req, res) => {
+    res.send("<html><body><a href='/api-docs'>Documentation<a></body></html>")
+  })
 
   routes(app);
 

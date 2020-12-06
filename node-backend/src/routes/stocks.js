@@ -39,7 +39,7 @@ export default (app) => {
       return res.sendStatus(400);
     }
     stocks.create(req.user.id, ticker);
-    res.sendStatus(200);
+    res.sendStatus(201);
   });
 
   app.put(route + "/:ticker", verifyToken, (req, res) => {

@@ -4,8 +4,8 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "start": "node index.js",
-    "test": "mocha ./src/tests/*"
+    "start": "node --experimental-json-modules index.js",
+    "test": "node --experimental-json-modules node_modules/.bin/_mocha ./src/tests/*"
   },
   "author": "",
   "license": "ISC",
@@ -16,7 +16,8 @@
     "jsonwebtoken": "^8.5.1",
     "mocha": "^8.2.1",
     "node-fetch": "^2.6.1",
-    "supertest": "^6.0.1"
+    "supertest": "^6.0.1",
+    "swagger-ui-express": "^4.1.5"
   },
   "type": "module"
 }
